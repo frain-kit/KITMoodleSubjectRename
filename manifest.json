@@ -1,0 +1,19 @@
+{
+    "name": "KIT Moodle Subject Rename",
+    "version": "1.0.0",
+    "manifest_version": 2,
+    "description": "Rename the subject id of sidebar into subject name",
+    "permissions": [
+        "storage"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://ict-i.el.kyutech.ac.jp/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ]
+}
