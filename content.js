@@ -1,16 +1,27 @@
 if (document.URL.startsWith("https://ict-i.el.kyutech.ac.jp/course/view.php?id=")) {
-    const subjectId = document.URL.substring(document.URL.lastIndexOf("=") + 1);
-    const title = document.title.substring(document.title.indexOf(":") + 2)
+    var subjectId = document.URL.substring(document.URL.indexOf("=") + 1);
+    if (subjectId.includes("#")) {
+        subjectId = subjectId.substring(0, subjectId.indexOf("#"))
+    }
+    if (subjectId.includes("&")) {
+        subjectId = subjectId.substring(0, subjectId.indexOf("&"))
+    }
 
-    chrome.storage.local.get("subjectNames", function (result) {
-        var map = result.subjectNames
+    if (isNaN(subjectId)) {
+        console.warn("Unable to parse subject id (" + subjectId + ")")
+    } else {
+        const title = document.title.substring(document.title.indexOf(":") + 2)
 
-        if (map == undefined || map == null) {
-            map = {}
-        }
-        map[subjectId] = title
-        chrome.storage.local.set({ subjectNames: map }, function () { console.log("Saved " + title + " as " + subjectId) });
-    })
+        chrome.storage.local.get("subjectNames", function (result) {
+            var map = result.subjectNames
+
+            if (map == undefined || map == null) {
+                map = {}
+            }
+            map[subjectId] = title
+            chrome.storage.local.set({ subjectNames: map }, function () { console.log("Saved " + title + " as " + subjectId) });
+        })
+    }
 }
 
 const navs = document.getElementById("nav-drawer").children
